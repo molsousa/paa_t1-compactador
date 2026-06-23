@@ -1,0 +1,6 @@
+*.out
+*.kdev4
+build/
+*.o
+*.obj
+*.txt
