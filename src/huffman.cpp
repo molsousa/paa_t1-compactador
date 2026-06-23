@@ -32,6 +32,11 @@ huffman::huffman(int indice, int frequencia, huffman* esq=nullptr, huffman* dir=
     this->dir = dir;
 }
 
+aplicacao::aplicacao()
+{
+    setlocale(LC_ALL, "");
+}
+
 void aplicacao::menu()
 {
     std::cout << "|| ===== Algoritmo árvore huffman ====== ||\n";
@@ -60,8 +65,18 @@ std::string aplicacao::ler_arquivo(std::string nome_arquivo)
         std::cerr << "Erro ao abrir arquivo\n";
     }
 
+    return texto;
+}
 
-    return buffer;
+std::unordered_map<int, int> aplicacao::contar_caracteres(std::string texto)
+{
+    std::unordered_map<int, int> frequencia_caracteres;
+
+    for(int c : texto){
+        frequencia_caracteres[c]++;
+    }
+
+    return frequencia_caracteres;
 }
 
 
