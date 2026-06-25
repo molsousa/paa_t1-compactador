@@ -1,6 +1,10 @@
 #include "../include/aplicacao.hpp"
 #include "../include/bits.hpp"
 
+/**
+ * @brief Contrutor para algoritmo de huffman.
+ * Inicializa o locale para leitura de caracteres unicode.
+ */
 aplicacao::aplicacao() : raiz(nullptr)
 {
     setlocale(LC_ALL, "");
@@ -8,6 +12,11 @@ aplicacao::aplicacao() : raiz(nullptr)
     codigos.clear();
 }
 
+/**
+ * @brief Função membro para realizar a leitura de arquivo texto.
+ * @param nome_arquivo nome do arquivo alvo.
+ * @return Retorna o texto extraído do arquivo lido.
+ */
 std::string aplicacao::ler_arquivo(std::string nome_arquivo)
 {
     std::ifstream arquivo(nome_arquivo, std::ios::binary);
@@ -34,6 +43,9 @@ std::string aplicacao::ler_arquivo(std::string nome_arquivo)
     }
 }
 
+/**
+ * @brief Função membro para acessar menu de opções.
+ */
 void aplicacao::menu()
 {
     int opcao;
@@ -85,6 +97,11 @@ void aplicacao::menu()
     std::cout << "Tempo de execução: " << duracao.count() << " ms\n";
 }
 
+/**
+ * @brief Função membro para construir árvore de huffman.
+ * @param frequencias mapa de símbolo para frequência de caracteres ou palavras.
+ * @return Retorna um ponteiro para raiz.
+ */
 huffman* aplicacao::construir_arvore(const std::map<std::string, int>& frequencias)
 {
     std::priority_queue<huffman*, std::vector<huffman*>, comparadorNo> fila;
@@ -113,6 +130,12 @@ huffman* aplicacao::construir_arvore(const std::map<std::string, int>& frequenci
     return raiz;
 }
 
+/**
+ * @brief Função membro para preencher o mapa de bits com código binário de forma recursiva.
+ * @param raiz raiz da árvore de huffman.
+ * @param caminho atributo para caminho que dita um símbolo.
+ * @param codigos mapa a ser preenchido.
+ */
 void aplicacao::gerar_codigo(huffman* no, std::string caminho, std::map<std::string, std::string>& codigos)
 {
     if(no == nullptr){
@@ -126,6 +149,11 @@ void aplicacao::gerar_codigo(huffman* no, std::string caminho, std::map<std::str
     gerar_codigo(no->get_dir(), caminho+"1", codigos);
 }
 
+/**
+ * @brief Função membro para percorrer o texto e extrair tokens.
+ * @param texto texto a ser percorrido.
+ * @return retorna um vetor de tokens.
+ */
 std::vector<std::string> aplicacao::extrair_tokens(const std::string& texto)
 {
     std::vector<std::string> tokens;
@@ -152,6 +180,11 @@ std::vector<std::string> aplicacao::extrair_tokens(const std::string& texto)
     return tokens;
 }
 
+/**
+ * @brief Função membro para escrever o número de símbolos, para cada símbolo o tamanho, a string e a frequência.
+ * @param saida arquivo de saída.
+ * @param frequencias mapa de frequência dos símbolos.
+ */
 void aplicacao::escrever_cabecalho(std::ofstream& saida, const std::map<std::string, int>& frequencias, uint64_t total_bits)
 {
     uint32_t num_simbolos = static_cast<uint32_t>(frequencias.size());
@@ -168,6 +201,11 @@ void aplicacao::escrever_cabecalho(std::ofstream& saida, const std::map<std::str
     }
 }
 
+/**
+ * @brief Função membro para ler o cabeçalho com o número de símbolos, para cada símbolo o tamanho, a string e a frequência.
+ * @param entrada arquivo de entrada.
+ * @return Retorna o mapa de frequência dos símbolos.
+ */
 std::map<std::string, int> aplicacao::ler_cabecalho(std::ifstream& entrada, uint64_t& total_bits)
 {
     entrada.read(reinterpret_cast<char*>(&total_bits), sizeof(total_bits));
@@ -188,6 +226,13 @@ std::map<std::string, int> aplicacao::ler_cabecalho(std::ifstream& entrada, uint
     return frequencias;
 }
 
+/**
+ * @brief Função membro para escrever os dados.
+ * @param saida arquivo de saída.
+ * @param texto
+ * @param codigos código a ser escrito no arquivo.
+ * @param modo_palavra caso caractere: percorre byte a byte e escreve os códigos, caso palavra: percorre os tokens e escreve os códigos.
+ */
 void aplicacao::escrever_dados_compactados(std::ofstream& saida,
                                            const std::string& texto,
                                            const std::map<std::string, std::string>& codigos,
@@ -227,6 +272,13 @@ void aplicacao::escrever_dados_compactados(std::ofstream& saida,
     escritor.flush();
 }
 
+/**
+ * @brief Função membro para percorrer a arvore e escrever a string original.
+ * @param entrada arquivo de entrada.
+ * @param raiz raiz da árvore de huffman.
+ * @param total_bits total de bits contidos no arquivo.
+ * @return Retorna a palavra original.
+ */
 std::string aplicacao::ler_dados_descompactados(std::ifstream& entrada, huffman* raiz, uint64_t total_bits)
 {
     leitura_bit leitor(entrada);
@@ -259,6 +311,11 @@ std::string aplicacao::ler_dados_descompactados(std::ifstream& entrada, huffman*
     return resultado;
 }
 
+/**
+ * @brief Função membro para compactar texto por caractere.
+ * @param entrada nome do arquivo de entrada.
+ * @param saida nome do arquivo de saída.
+ */
 void aplicacao::compactar_caractere(const std::string& entrada, const std::string& saida)
 {
     std::string texto {ler_arquivo(entrada)};
@@ -287,6 +344,11 @@ void aplicacao::compactar_caractere(const std::string& entrada, const std::strin
     ofile.close();
 }
 
+/**
+ * @brief Função membro para descompactar texto por caractere.
+ * @param entrada nome do arquivo de entrada.
+ * @param saida nome do arquivo de saída.
+ */
 void aplicacao::descompactar_caractere(const std::string& entrada, const std::string& saida)
 {
     std::ifstream ifile(entrada, std::ios::binary);
@@ -313,6 +375,11 @@ void aplicacao::descompactar_caractere(const std::string& entrada, const std::st
     ofile.close();
 }
 
+/**
+ * @brief Função membro para compactar texto por palavra.
+ * @param entrada nome do arquivo de entrada.
+ * @param saida nome do arquivo de saída.
+ */
 void aplicacao::compactar_palavra(const std::string& entrada, const std::string& saida)
 {
     std::string texto {ler_arquivo(entrada)};
@@ -342,6 +409,11 @@ void aplicacao::compactar_palavra(const std::string& entrada, const std::string&
     ofile.close();
 }
 
+/**
+ * @brief Função membro para descompactar texto por palavra.
+ * @param entrada nome do arquivo de entrada.
+ * @param saida nome do arquivo de saída.
+ */
 void aplicacao::descompactar_palavra(const std::string& entrada, const std::string& saida)
 {
     std::ifstream ifile(entrada, std::ios::binary);

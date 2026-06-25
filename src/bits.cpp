@@ -1,7 +1,15 @@
 #include "../include/bits.hpp"
 
+/**
+ * @brief Construtor para classe escrita_bit.
+ * @param saida arquivo de saída.
+ */
 escrita_bit::escrita_bit(std::ofstream& saida) : saida(saida), buffer(0), contador(0) {}
 
+/**
+ * @brief Função membro para escrever um bit.
+ * @param bit inteiro contendo um unico bit.
+ */
 void escrita_bit::escrever_bit(int bit)
 {
     if(bit != 0 && bit != 1){
@@ -18,6 +26,10 @@ void escrita_bit::escrever_bit(int bit)
     }
 }
 
+/**
+ * @brief Função membro para escrever a sequência de bits.
+ * @param codigo string contendo a sequência de bits
+ */
 void escrita_bit::escrever_bits(const std::string& codigo)
 {
     for(char c : codigo){
@@ -33,6 +45,9 @@ void escrita_bit::escrever_bits(const std::string& codigo)
     }
 }
 
+/**
+ * @brief Função membro para escrever o último byte, preenchendo com zeros.
+ */
 void escrita_bit::flush()
 {
     if(contador > 0){
@@ -43,8 +58,16 @@ void escrita_bit::flush()
     }
 }
 
+/**
+ * @brief Construtor para classe leitura_bit.
+ * @param entrada arquivo de entrada.
+ */
 leitura_bit::leitura_bit(std::ifstream& entrada) : entrada(entrada), buffer(0), contador(0) {}
 
+/**
+ * @brief Função membro para leitura de bits.
+ * @return Retorna 0, 1 ou -1 (caso esteja no final do arquivo).
+ */
 int leitura_bit::ler_bit()
 {
     if(contador == 0){
@@ -61,6 +84,10 @@ int leitura_bit::ler_bit()
     return bit;
 }
 
+/**
+ * @brief Função membro para indicar se está no final de um arquivo.
+ * @return Retorna true caso esteja ao final do arquivo.
+ */
 bool leitura_bit::fim()
 {
     return (entrada.eof() && contador == 0);
