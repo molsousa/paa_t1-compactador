@@ -51,12 +51,14 @@ void aplicacao::menu()
     int opcao;
     std::string entrada, saida;
 
+    std::cout << "===========================================\n";
     std::cout << "|| ===== Algoritmo árvore huffman ====== ||\n";
     std::cout << "|| 1 - Compactar arquivo (caractere)     ||\n";
     std::cout << "|| 2 - Descompactar arquivo (caractere)  ||\n";
     std::cout << "|| 3 - Compactar arquivo (palavra)       ||\n";
     std::cout << "|| 4 - Descompactar arquivo (palavra)    ||\n";
     std::cout << "|| ===================================== ||\n";
+    std::cout << "===========================================\n";
     std::cout << "Insira uma opção: ";
 
     std::cin >> opcao;

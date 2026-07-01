@@ -8,8 +8,10 @@ int main()
 
     do{
         std::cout << "============================\n";
+        std::cout << "|| ====================== ||\n";
         std::cout << "|| 1 - Utilizar algoritmo ||\n";
         std::cout << "|| 0 - Sair               ||\n";
+        std::cout << "|| ====================== ||\n";
         std::cout << "============================\n";
         std::cout << "Escolha uma opção: ";
         std::cin >> opcao;
@@ -20,9 +22,15 @@ int main()
             system("clear");
         #endif
 
-        if(opcao != 0){
+        if(opcao == 1){
             aplicacao app;
             app.menu();
+        }
+        else if(opcao == 0){
+            std::cout << "Obrigado!!\n";
+        }
+        else{
+            std::cout << "Opção inválida, tente novamente\n";
         }
 
     }while(opcao != 0);
