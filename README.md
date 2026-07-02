@@ -28,11 +28,19 @@ Este repositório contém um algoritmo de codificação e compressão para a mat
 
 ### Compilação e execução
 
-É necessário compilar todos os arquivos fonte (`.cpp`) dentro da pasta do projeto, e ao gerar o executável, executar e utilizar o algoritmo.
+É necessário compilar utilizando o comando abaixo, e ao gerar o executável, executar e utilizar o algoritmo.
+
+```sh
+make
+```
+
+---
 
 Ao executar, um menu inicial é apresentado ao usuário com opções de utilizar e sair do menu. Após escolher a opção de utilizar, são apresentadas quatro opções, como demonstrado na captura de tela a seguir:
 
 ![Menu de Opções](images/menu.png)
+
+---
 
 Após a compactação, é gerado um arquivo binário com tamanho comprimido que pode ser utilizado para descompressão no futuro, dentro do arquivo comprimido é criado um cabeçalho contendo principais informações para a descompressão.
 
